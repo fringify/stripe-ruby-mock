@@ -1208,6 +1208,7 @@ module StripeMock
     def self.mock_payment_intent(params = {})
       payment_intent_id = params[:id] || "pi_1EwXFB2eZvKYlo2CggNnFBo8"
       amount = params[:amount] || 49900
+      created = params[:created] || 1563208901
       currency = params[:currency] || StripeMock.default_currency
       {
           id: payment_intent_id,
@@ -1229,7 +1230,7 @@ module StripeMock
           },
           client_secret: "pi_1EwXFB2eZvKYlo2CggNnFBo8_secret_vOMkpqZu8ca7hxhfiO80tpT3v",
           confirmation_method: "manual",
-          created: set_created_at(params[:created]),
+          created: created,
           currency: currency,
           customer: nil,
           description: nil,
@@ -1253,19 +1254,6 @@ module StripeMock
           transfer_data: nil,
           transfer_group: nil
       }.merge(params)
-    end
-
-    def self.set_created_at(value)
-      return 1563208901 if value.nil?
-      return params_created if value.is_a?(Fixnum)
-
-      if value.is_a?(Date)
-        value.to_datetime.to_i
-      elsif value.is_a?(DateTime) || value.is_a?(Time)
-        value.to_i
-      else 
-        1563208901
-      end
     end
 
     def self.mock_payment_method(params = {})
